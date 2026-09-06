@@ -1,0 +1,98 @@
+name: Update Leaderboard
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  issues: read
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'solved'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rebuild leaderboard tables
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const cycles = ['cycle1', 'cycle2', 'cycle3', 'cycle4'];
+
+            const { data: solved } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'solved',
+              state: 'all',
+              per_page: 100,
+            });
+
+            // Fastest solvers per individual cycle.
+            const perCycle = {};
+            for (const c of cycles) {
+              perCycle[c] = solved
+                .filter(i => i.labels.some(l => l.name === c))
+                .sort((a, b) => new Date(a.closed_at) - new Date(b.closed_at));
+            }
+
+            // Overall: everyone who has solved all four, ranked by when
+            // their final (latest) solve closed.
+            const byUser = {};
+            for (const i of solved) {
+              const cycle = i.labels.map(l => l.name).find(l => cycles.includes(l));
+              if (!cycle) continue;
+              const user = i.user.login;
+              byUser[user] = byUser[user] || {};
+              // Keep the earliest solve if a cycle was somehow solved twice.
+              if (!byUser[user][cycle] || new Date(i.closed_at) < new Date(byUser[user][cycle])) {
+                byUser[user][cycle] = i.closed_at;
+              }
+            }
+            const finishers = Object.entries(byUser)
+              .filter(([, c]) => cycles.every(cy => c[cy]))
+              .map(([user, c]) => ({
+                user,
+                finishedAt: cycles.map(cy => c[cy]).sort().slice(-1)[0],
+              }))
+              .sort((a, b) => new Date(a.finishedAt) - new Date(b.finishedAt));
+
+            let out = '## Overall Leaderboard (all 4 flags)\n\n';
+            if (finishers.length === 0) {
+              out += '_Nobody has all four yet._\n';
+            } else {
+              out += '| # | Operator | Finished |\n|---|---|---|\n';
+              finishers.forEach((f, idx) => {
+                out += `| ${idx + 1} | @${f.user} | ${f.finishedAt} |\n`;
+              });
+            }
+
+            out += '\n## Per-Cycle Fastest Solvers\n';
+            for (const c of cycles) {
+              out += `\n### ${c}\n\n`;
+              if (perCycle[c].length === 0) {
+                out += '_No solves yet._\n';
+                continue;
+              }
+              out += '| # | Operator | Solved |\n|---|---|---|\n';
+              perCycle[c].slice(0, 10).forEach((i, idx) => {
+                out += `| ${idx + 1} | @${i.user.login} | ${i.closed_at} |\n`;
+              });
+            }
+
+            const readme = fs.readFileSync('README.md', 'utf8');
+            const start = '<!-- LEADERBOARD:START -->';
+            const end = '<!-- LEADERBOARD:END -->';
+            const before = readme.split(start)[0];
+            const after = readme.split(end)[1];
+            fs.writeFileSync('README.md', `${before}${start}\n\n${out}\n${end}${after}`);
+
+      - name: Commit updated leaderboard
+        run: |
+          git config user.name "haxnation-bot"
+          git config user.email "bot@haxnation.local"
+          git add README.md
+          git diff --cached --quiet || git commit -m "Update leaderboard"
+          git push

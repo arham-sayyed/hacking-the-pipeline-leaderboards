@@ -1,0 +1,16 @@
+name: "Cycle 2 — The Echo Leak"
+description: Submit the flag you found printed in a workflow run log.
+title: "[Cycle 2] Flag submission"
+labels: ["cycle2", "submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Paste exactly what you found. Nothing else in this field.
+  - type: input
+    id: flag
+    attributes:
+      label: Flag
+      placeholder: HAXN{...}
+    validations:
+      required: true

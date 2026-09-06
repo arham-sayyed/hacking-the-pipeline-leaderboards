@@ -1,0 +1,83 @@
+name: Validate Flag Submission
+
+# Fires when a student opens one of the four issue forms, and again if they
+# edit it (so a typo doesn't force them to open a brand new issue).
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'submission')
+    steps:
+      - name: Check the submitted flag
+        uses: actions/github-script@v7
+        env:
+          CYCLE1_FLAG: ${{ secrets.CYCLE1_FLAG }}
+          CYCLE2_FLAG: ${{ secrets.CYCLE2_FLAG }}
+          CYCLE3_FLAG: ${{ secrets.CYCLE3_FLAG }}
+          CYCLE4_FLAG: ${{ secrets.CYCLE4_FLAG }}
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const labelNames = issue.labels.map(l => l.name);
+
+            // Already correctly solved — don't re-process on later edits.
+            if (labelNames.includes('solved')) return;
+
+            const cycleLabel = labelNames.find(l => /^cycle[1-4]$/.test(l));
+            if (!cycleLabel) return;
+
+            const correctByCycle = {
+              cycle1: process.env.CYCLE1_FLAG,
+              cycle2: process.env.CYCLE2_FLAG,
+              cycle3: process.env.CYCLE3_FLAG,
+              cycle4: process.env.CYCLE4_FLAG,
+            };
+            const correct = (correctByCycle[cycleLabel] || '').trim();
+
+            // Issue Forms render each field as a "### Label" heading
+            // followed by the value on the next non-empty line.
+            const match = issue.body.match(/### Flag\s*\n+\s*([^\n]+)/i);
+            const submitted = match ? match[1].trim() : '';
+
+            if (submitted && correct && submitted === correct) {
+              const { data: alreadySolvedForCycle } = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: `solved,${cycleLabel}`,
+                state: 'all',
+                per_page: 100,
+              });
+              const rank = alreadySolvedForCycle.length + 1;
+
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['solved'],
+              });
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `Correct. You're solver #${rank} for **${cycleLabel}**.`,
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed',
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `Not quite. Edit this issue to try again, no need to open a new one.`,
+              });
+            }
