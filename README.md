@@ -18,6 +18,49 @@ something. Refresh this page to see it move.
 
 <!-- LEADERBOARD:START -->
 
-_No solves yet. Get hacking._
+## Overall Leaderboard (all 4 flags)
+
+| # | Operator | Finished |
+|---|---|---|
+| 1 | @AnoopG7 | 2026-09-07T08:29:22Z |
+
+## Per-Cycle Fastest Solvers
+
+### cycle1
+
+| # | Operator | Solved |
+|---|---|---|
+| 1 | @bharath-541 | 2026-09-07T08:26:44Z |
+| 2 | @AnoopG7 | 2026-09-07T08:27:41Z |
+| 3 | @bharath-541 | 2026-09-07T08:27:49Z |
+| 4 | @MSB-io | 2026-09-07T08:29:08Z |
+| 5 | @RiteshJadhav283 | 2026-09-07T08:31:48Z |
+| 6 | @pratima0809 | 2026-09-07T08:31:57Z |
+| 7 | @Vik-713 | 2026-09-07T08:34:27Z |
+| 8 | @vijayKota2776 | 2026-09-07T08:35:05Z |
+| 9 | @SamarthD1 | 2026-09-07T08:35:21Z |
+
+### cycle2
+
+| # | Operator | Solved |
+|---|---|---|
+| 1 | @AnoopG7 | 2026-09-07T08:28:49Z |
+| 2 | @bharath-541 | 2026-09-07T08:30:19Z |
+| 3 | @RiteshJadhav283 | 2026-09-07T08:32:56Z |
+| 4 | @Vik-713 | 2026-09-07T08:37:04Z |
+| 5 | @MSB-io | 2026-09-07T08:38:43Z |
+
+### cycle3
+
+| # | Operator | Solved |
+|---|---|---|
+| 1 | @AnoopG7 | 2026-09-07T08:29:04Z |
+
+### cycle4
+
+| # | Operator | Solved |
+|---|---|---|
+| 1 | @AnoopG7 | 2026-09-07T08:29:22Z |
+| 2 | @bharath-541 | 2026-09-07T08:38:20Z |
 
 <!-- LEADERBOARD:END -->
