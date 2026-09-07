@@ -29,6 +29,7 @@ something. Refresh this page to see it move.
 | 5 | @vijayKota2776 | 2026-09-07T08:59:31Z |
 | 6 | @Vik-713 | 2026-09-07T09:00:37Z |
 | 7 | @pratima0809 | 2026-09-07T09:03:02Z |
+| 8 | @devdarshan1495 | 2026-09-07T09:06:32Z |
 
 ## Per-Cycle Fastest Solvers
 
