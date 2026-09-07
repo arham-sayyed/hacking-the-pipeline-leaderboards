@@ -15,6 +15,12 @@ permissions:
   contents: write
   issues: read
 
+# Serialize rebuilds so two runs never race to push main. Don't cancel an
+# in-progress run — each rebuild reflects a real solve and must complete.
+concurrency:
+  group: update-leaderboard
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -100,5 +106,14 @@ jobs:
           git config user.name "haxnation-bot"
           git config user.email "bot@haxnation.local"
           git add README.md
-          git diff --cached --quiet || git commit -m "Update leaderboard"
-          git push
+          git diff --cached --quiet && { echo "No leaderboard change."; exit 0; }
+          git commit -m "Update leaderboard"
+          # The concurrency group already serializes rebuilds; this retry only
+          # covers a stray push from elsewhere landing between commit and push.
+          branch="${GITHUB_REF_NAME:-main}"
+          for attempt in 1 2 3 4 5; do
+            git push && exit 0
+            echo "push rejected, rebasing (attempt $attempt)"
+            git pull --rebase -X theirs origin "$branch" || { git rebase --abort; exit 1; }
+          done
+          echo "push still failing after retries"; exit 1
