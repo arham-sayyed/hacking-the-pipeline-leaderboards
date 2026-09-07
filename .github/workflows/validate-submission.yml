@@ -42,7 +42,7 @@ jobs:
 
             // Issue Forms render each field as a "### Label" heading
             // followed by the value on the next non-empty line.
-            const match = issue.body.match(/### Flag\s*\n+\s*([^\n]+)/i);
+            const match = (issue.body || '').match(/### Flag\s*\n+\s*([^\n]+)/i);
             const submitted = match ? match[1].trim() : '';
 
             if (submitted && correct && submitted === correct) {
