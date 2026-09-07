@@ -31,6 +31,7 @@ something. Refresh this page to see it move.
 | 7 | @pratima0809 | 2026-09-07T09:03:02Z |
 | 8 | @devdarshan1495 | 2026-09-07T09:06:32Z |
 | 9 | @MSB-io | 2026-09-07T09:12:55Z |
+| 10 | @Rehan225 | 2026-09-07T09:13:19Z |
 
 ## Per-Cycle Fastest Solvers
 
