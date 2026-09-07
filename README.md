@@ -26,6 +26,7 @@ something. Refresh this page to see it move.
 | 2 | @RohanVashisht1234 | 2026-09-07T08:40:40Z |
 | 3 | @RiteshJadhav283 | 2026-09-07T08:43:00Z |
 | 4 | @bharath-541 | 2026-09-07T08:50:22Z |
+| 5 | @vijayKota2776 | 2026-09-07T08:59:31Z |
 
 ## Per-Cycle Fastest Solvers
 
@@ -70,6 +71,8 @@ something. Refresh this page to see it move.
 | 5 | @MSB-io | 2026-09-07T08:54:38Z |
 | 6 | @adarsh985 | 2026-09-07T08:55:15Z |
 | 7 | @kshitijarenuke-cell | 2026-09-07T08:56:44Z |
+| 8 | @pratima0809 | 2026-09-07T08:59:26Z |
+| 9 | @vijayKota2776 | 2026-09-07T08:59:31Z |
 
 ### cycle4
 
@@ -83,5 +86,6 @@ something. Refresh this page to see it move.
 | 6 | @devdarshan1495 | 2026-09-07T08:54:38Z |
 | 7 | @vijayKota2776 | 2026-09-07T08:55:52Z |
 | 8 | @Fayaz5506 | 2026-09-07T08:57:30Z |
+| 9 | @kshitijarenuke-cell | 2026-09-07T08:59:32Z |
 
 <!-- LEADERBOARD:END -->
