@@ -1,8 +1,15 @@
 name: Update Leaderboard
 
+# The 'solved' label is added by validate-submission.yml using GITHUB_TOKEN,
+# and token-driven events don't trigger other workflows. So instead we rebuild
+# whenever the validation workflow finishes, plus a manual button for backfills.
+# The script regenerates the whole table from every 'solved' issue, so running
+# it on a losing submission (or twice) is harmless.
 on:
-  issues:
-    types: [labeled]
+  workflow_run:
+    workflows: ["Validate Flag Submission"]
+    types: [completed]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -11,7 +18,6 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
-    if: github.event.label.name == 'solved'
     steps:
       - uses: actions/checkout@v4
 
