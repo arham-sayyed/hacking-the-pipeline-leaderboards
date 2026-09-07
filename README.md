@@ -28,6 +28,7 @@ something. Refresh this page to see it move.
 | 4 | @bharath-541 | 2026-09-07T08:50:22Z |
 | 5 | @vijayKota2776 | 2026-09-07T08:59:31Z |
 | 6 | @Vik-713 | 2026-09-07T09:00:37Z |
+| 7 | @pratima0809 | 2026-09-07T09:03:02Z |
 
 ## Per-Cycle Fastest Solvers
 
@@ -89,5 +90,6 @@ something. Refresh this page to see it move.
 | 7 | @vijayKota2776 | 2026-09-07T08:55:52Z |
 | 8 | @Fayaz5506 | 2026-09-07T08:57:30Z |
 | 9 | @kshitijarenuke-cell | 2026-09-07T08:59:32Z |
+| 10 | @pratima0809 | 2026-09-07T09:03:02Z |
 
 <!-- LEADERBOARD:END -->
